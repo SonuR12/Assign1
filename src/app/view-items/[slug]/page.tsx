@@ -14,7 +14,7 @@ interface Item {
   coverImage: string;
   images: string[];
   brand?: string;
-  price?: string;
+  price?: string | number;
 }
 
 export default function ItemDetailPage() {

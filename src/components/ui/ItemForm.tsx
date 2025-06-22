@@ -306,7 +306,7 @@ export default function ItemFormWithList() {
                 <FormItem>
                   <FormLabel>Price (INR)</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. 1299" {...field} />
+                    <Input type="number" placeholder="e.g. 1299" {...field} className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
