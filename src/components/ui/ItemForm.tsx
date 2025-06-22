@@ -57,7 +57,6 @@ type ItemFormValues = z.infer<typeof itemSchema>;
 export default function ItemFormWithList() {
   const [items, setItems] = useState<Item[]>([]);
   const [editId, setEditId] = useState<string | null>(null);
-  const router = useRouter();
 
   const form = useForm<ItemFormValues>({
     resolver: zodResolver(itemSchema),
