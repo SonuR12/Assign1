@@ -29,6 +29,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 interface Item {
   id: string;
@@ -56,6 +57,7 @@ type ItemFormValues = z.infer<typeof itemSchema>;
 export default function ItemFormWithList() {
   const [items, setItems] = useState<Item[]>([]);
   const [editId, setEditId] = useState<string | null>(null);
+  const router = useRouter();
 
   const form = useForm<ItemFormValues>({
     resolver: zodResolver(itemSchema),
@@ -156,14 +158,35 @@ export default function ItemFormWithList() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => handleEdit(item)}
-                    className="cursor-pointer"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() => handleEdit(item)}
+                        className="cursor-pointer"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Edit this item?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to edit this item? You can update its details on the next screen.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleEdit(item)}
+                          className="bg-blue-600"
+                        >
+                          Edit
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
