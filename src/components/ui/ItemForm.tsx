@@ -111,6 +111,7 @@ export default function ItemFormWithList() {
       description: "",
       coverImage: "",
       images: "",
+      price: "",
     });
   };
 
@@ -121,6 +122,7 @@ export default function ItemFormWithList() {
       description: item.description,
       coverImage: item.coverImage,
       images: item.images.join(", "),
+      price: item.price,
     });
     setEditId(item.id);
   };
@@ -149,6 +151,7 @@ export default function ItemFormWithList() {
                   />
                   <div>
                     <h3 className="font-semibold">{item.name}</h3>
+                    <h3 className="font-semibold">₹{item.price}</h3>
                     <p className="text-sm text-muted-foreground">{item.type}</p>
                   </div>
                 </div>

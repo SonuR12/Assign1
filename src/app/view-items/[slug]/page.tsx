@@ -85,7 +85,7 @@ export default function ItemDetailPage() {
             <p className="leading-relaxed line-clamp-4 pb-2">{item.description}</p>
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">
-                {item.price}
+                ₹{item.price}
               </span>
               <Button className="ml-auto bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-2">
                 Enquire

@@ -19,7 +19,7 @@ export default function ItemCard({ item }: { item: Item }) {
       />
       <div className="flex justify-between items-center mb-2">
       <h3 className="font-semibold text-lg">{item.name}</h3>
-      <h3 className="font-semibold text-lg">{item.price}</h3>
+      <h3 className="font-semibold text-lg">₹{item.price}</h3>
       </div>
       <span className="line-clamp-2">{item.description}</span>
     </Card>
