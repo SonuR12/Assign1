@@ -79,7 +79,7 @@ mpm run dev
 - 🖼️ Modal with **image carousel**  
 - 📝 Add / Edit item form with **Zod validation**  
 
-![image]()
+![image](https://github.com/SonuR12/Assign1/blob/main/public/Demo.png)
 ---
 
 ## 🔮 Future Enhancements
