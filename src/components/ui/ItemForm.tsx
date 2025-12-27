@@ -29,6 +29,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { sanitizeInput, validateImageUrl } from "@/lib/security";
 
 interface Item {
   id: string;
@@ -37,18 +38,36 @@ interface Item {
   description: string;
   coverImage: string;
   images: string[];
-  price: string; // <-- add this line
+  price: string;
   brand?: string;
 }
 
-// Zod schema for validation
+// Enhanced Zod schema with security validation
 const itemSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  type: z.string().min(1, "Type is required"),
-  description: z.string().min(1, "Description is required"),
-  coverImage: z.string().url("Must be a valid URL"),
-  images: z.string().min(1, "At least one image is required"),
-  price: z.string().min(1, "Price is required"),
+  name: z.string().min(1, "Name is required").max(100, "Name too long").refine(
+    (val) => !/[<>"']/g.test(val), 
+    "Invalid characters detected"
+  ),
+  type: z.string().min(1, "Type is required").max(50, "Type too long").refine(
+    (val) => !/[<>"']/g.test(val), 
+    "Invalid characters detected"
+  ),
+  description: z.string().min(1, "Description is required").max(500, "Description too long").refine(
+    (val) => !/[<>"']/g.test(val), 
+    "Invalid characters detected"
+  ),
+  coverImage: z.string().url("Must be a valid URL").refine(
+    (val) => validateImageUrl(val), 
+    "Must be a valid image URL"
+  ),
+  images: z.string().min(1, "At least one image is required").refine(
+    (val) => val.split(',').every(url => validateImageUrl(url.trim())), 
+    "All URLs must be valid image URLs"
+  ),
+  price: z.string().min(1, "Price is required").refine(
+    (val) => /^\d+(\.\d{1,2})?$/.test(val), 
+    "Price must be a valid number"
+  ),
 });
 
 type ItemFormValues = z.infer<typeof itemSchema>;
@@ -80,16 +99,16 @@ export default function ItemFormWithList() {
     localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
 
-  // Submit handler
+  // Submit handler with security sanitization
   const onSubmit = (data: ItemFormValues) => {
     const item: Item = {
       id: editId || Date.now().toString(),
-      name: data.name,
-      type: data.type,
-      description: data.description,
+      name: sanitizeInput(data.name),
+      type: sanitizeInput(data.type),
+      description: sanitizeInput(data.description),
       coverImage: data.coverImage,
       images: data.images.split(",").map((img) => img.trim()),
-      price: data.price, // <-- FIXED
+      price: data.price,
     };
 
     if (editId) {
